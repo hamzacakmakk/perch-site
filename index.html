@@ -5,29 +5,71 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Perch</title>
 <meta name="description" content="Ekranının kenarına tüneyen çalışma ortamı. macOS için.">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<meta property="og:image" content="icon.png">
 <style>
-  :root { color-scheme: light dark; --fg: #1d1d1f; --muted: #6e6e73; --bg: #fff; --card: #f5f5f7; --accent: #0071e3; }
-  @media (prefers-color-scheme: dark) { :root { --fg: #f5f5f7; --muted: #a1a1a6; --bg: #000; --card: #1d1d1f; } }
+  :root {
+    color-scheme: light dark;
+    --fg: #1d1d1f; --muted: #6e6e73; --bg: #fff; --card: #f5f5f7; --line: rgba(0,0,0,.08);
+    /* Marka: gece mavisi → menekşe (ikon zemini). */
+    --night: #1a2256; --violet: #5a3cc8; --brand: #5a3cc8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg: #f5f5f7; --muted: #a1a1a6; --bg: #000; --card: #1d1d1f; --line: rgba(255,255,255,.1); --brand: #8b73ff; }
+  }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--fg);
          font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
          -webkit-font-smoothing: antialiased; }
-  main { max-width: 640px; margin: 0 auto; padding: 96px 24px; text-align: center; }
+  main { max-width: 640px; margin: 0 auto; padding: 88px 24px 64px; }
+  .hero { text-align: center; }
+  .hero img { width: 128px; height: 128px; display: block; margin: 0 auto 20px; }
   h1 { font-size: 56px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 12px; }
-  p.lead { font-size: 21px; color: var(--muted); margin: 0 0 40px; line-height: 1.4; }
-  .btn { display: inline-block; padding: 12px 24px; border-radius: 980px; background: var(--accent);
+  p.lead { font-size: 21px; color: var(--muted); margin: 0 auto 32px; line-height: 1.4; max-width: 30em; }
+  .btn { display: inline-block; padding: 12px 24px; border-radius: 980px;
+         background: linear-gradient(135deg, var(--night), var(--violet));
          color: #fff; text-decoration: none; font-size: 17px; font-weight: 500; }
-  .btn[aria-disabled="true"] { opacity: .5; pointer-events: none; }
-  .note { margin-top: 16px; font-size: 13px; color: var(--muted); }
-  footer { margin-top: 96px; font-size: 12px; color: var(--muted); }
+  .btn[aria-disabled="true"] { opacity: .55; pointer-events: none; }
+  .note { margin: 16px 0 0; font-size: 13px; color: var(--muted); }
+  h2 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em;
+       color: var(--muted); margin: 80px 0 12px; }
+  ul.modules { list-style: none; margin: 0; padding: 0; background: var(--card); border-radius: 16px; }
+  ul.modules li { display: flex; gap: 16px; padding: 14px 20px; line-height: 1.4; font-size: 15px; }
+  ul.modules li + li { border-top: 1px solid var(--line); }
+  ul.modules b { flex: 0 0 76px; font-weight: 600; color: var(--brand); }
+  ul.modules span { color: var(--muted); }
+  footer { margin-top: 64px; font-size: 12px; color: var(--muted); text-align: center; }
+  @media (max-width: 480px) {
+    main { padding-top: 56px; }
+    h1 { font-size: 44px; }
+    p.lead { font-size: 18px; }
+    ul.modules li { flex-direction: column; gap: 2px; }
+    ul.modules b { flex-basis: auto; }
+  }
 </style>
 </head>
 <body>
 <main>
-  <h1>Perch</h1>
-  <p class="lead">Ekranının kenarına tüneyen çalışma ortamı.<br>Hangi projede olduğunu bilir; notların, agent'ların, dosyaların ve müziğin ona göre şekillenir.</p>
-  <a class="btn" href="#" aria-disabled="true">Yakında</a>
-  <p class="note">macOS 15 ve üzeri · Apple Silicon</p>
+  <section class="hero">
+    <img src="icon.png" width="128" height="128" alt="Perch simgesi: ekranın üst kenarına tünemiş bir kuş">
+    <h1>Perch</h1>
+    <p class="lead">Ekranının kenarına tüneyen çalışma ortamı: hangi projede olduğunu bilir; notların, agent'ların ve dosyaların ona göre şekillenir.</p>
+    <a class="btn" href="#" aria-disabled="true">Yakında</a>
+    <p class="note">macOS 15+ · Apple Silicon</p>
+  </section>
+
+  <h2>Kenarlarda</h2>
+  <ul class="modules">
+    <li><b>Agent'lar</b><span>Koşan Claude Code agent'ları: hangisi bitti, hangisi seni bekliyor.</span></li>
+    <li><b>Notlar</b><span>Açık projenin notları; repo değişince notlar da değişir.</span></li>
+    <li><b>Oturum</b><span>Bugün bu projede ne yaptın, gün sonunda tek kartta.</span></li>
+    <li><b>Çalan</b><span>Çalan müzik ve projenin odak listesi, pencere açmadan.</span></li>
+    <li><b>Raf</b><span>Dosyaları kenara bırak, projeyle birlikte dursun.</span></li>
+    <li><b>Pano</b><span>Kopyaladıkların, projeye göre ayrılmış.</span></li>
+    <li><b>Takvim</b><span>Sıradaki toplantı, imleci kenara götürdüğün an.</span></li>
+  </ul>
+
   <footer>© 2026 Hamza Çakmak</footer>
 </main>
 </body>
