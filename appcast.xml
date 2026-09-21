@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>Perch</title>
+    <link>https://hamzacakmakk.github.io/perch-site/</link>
+    <description>Perch güncellemeleri</description>
+    <language>tr</language>
+    <!-- Sürüm girdileri `make appcast` ile üretilir; elle düzenlenmez. -->
+  </channel>
+</rss>
