@@ -880,8 +880,9 @@ for (const [id, z] of Object.entries(ZONES)) {
   stage.append(strip, peek, panel);
   Object.assign(z, { strip, peekEl: peek, panelEl: panel, state: "hidden", hover: new Set(), timers: [], grace: 0, pinned: false });
   for (const el of [strip, peek, panel]) {
-    el.addEventListener("pointerenter", e => { if (e.pointerType !== "touch") enter(id, el); });
-    el.addEventListener("pointerleave", e => { if (e.pointerType !== "touch") leave(id, el); });
+    // Kullanıcı bir kenara (ya da açık panele) geldiğinde tur ona yer açar.
+    el.addEventListener("pointerenter", e => { if (e.pointerType !== "touch") { userTakesOver(); enter(id, el); } });
+    el.addEventListener("pointerleave", e => { if (e.pointerType !== "touch") { leave(id, el); userLeft(); } });
   }
   strip.addEventListener("click", e => { e.stopPropagation(); togglePin(id); });
   peek.addEventListener("click", e => { e.stopPropagation(); togglePin(id); });
@@ -939,7 +940,8 @@ stage.addEventListener("click", () => {
   }
 });
 
-/* Tur: kimse dokunmazken hayalî imleç kenarları sırayla gezer */
+/* Tur: hayalî imleç kenarları sırayla gezer. İmleç sahnede gezinirken tur sürer;
+   yalnız kullanıcı bir kenarı ya da açık bir paneli kendisi tetikleyince durur. */
 const cursor = $("#fakeCursor");
 const TOUR = { tour: true };
 const tourOrder = ["tc", "tr", "r", "br", "bl", "l", "tl"];
@@ -947,8 +949,6 @@ let userActive = false, userTimer = 0, stageVisible = false, tourIndex = 0, tour
 function stopTourZone() { cursor.classList.remove("on"); if (tourZone) { leave(tourZone, TOUR); tourZone = null; } }
 function userTakesOver() { userActive = true; clearTimeout(userTimer); stopTourZone(); }
 function userLeft(ms = 3500) { clearTimeout(userTimer); userTimer = setTimeout(() => { userActive = false; }, ms); }
-stage.addEventListener("pointerenter", e => { if (e.pointerType !== "touch") userTakesOver(); });
-stage.addEventListener("pointerleave", e => { if (e.pointerType !== "touch") userLeft(); });
 stage.addEventListener("touchstart", () => { userTakesOver(); userLeft(7000); }, { passive: true });
 const canTour = () => stageVisible && !userActive && !document.hidden && !reduced;
 const moveCursor = ([x, y]) => { cursor.style.transform = `translate(${x - 5}px, ${y - 3}px)`; };
